@@ -1,16 +1,28 @@
-import type { MetaFunction } from "@remix-run/node";
+import { json, type MetaFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { Button } from "~/components/ui/button";
+import { prisma } from "~/db/prisma";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
+    { title: "Marketplace" },
     { name: "description", content: "Welcome to Remix!" },
   ];
 };
 
+export async function loader() {
+  const users = await prisma.user.findMany();
+  return json(users);
+}
+
 export default function Index() {
+  const data = useLoaderData();
+  console.log("data", data);
+
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix</h1>
+      <h1 className="text-red-400">Welcome to Remix</h1>
+      <Button>Test</Button>
       <ul>
         <li>
           <a
